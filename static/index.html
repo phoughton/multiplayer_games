@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>PONG</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div id="root">
+    <!-- SPLASH -->
+    <section id="view-splash" class="view active">
+      <h1 class="title mega">PONG</h1>
+    </section>
+
+    <!-- MENU -->
+    <section id="view-menu" class="view">
+      <h1 class="title">PONG</h1>
+      <button id="btn-new" class="big">START NEW GAME</button>
+      <button id="btn-join" class="big">JOIN WITH CODE</button>
+      <div id="join-panel" class="hidden">
+        <input id="code-input" type="text" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CODE" />
+        <button id="btn-join-submit" class="big">JOIN</button>
+        <button id="btn-join-cancel" class="plain">CANCEL</button>
+        <p id="join-error" class="error hidden"></p>
+      </div>
+    </section>
+
+    <!-- LOBBY -->
+    <section id="view-lobby" class="view">
+      <h2 class="title">SHARE THIS CODE</h2>
+      <div id="lobby-code" class="code-display">------</div>
+      <p id="lobby-status">WAITING FOR OPPONENT...</p>
+      <button id="btn-lobby-cancel" class="plain">CANCEL</button>
+    </section>
+
+    <!-- PLAYING -->
+    <section id="view-play" class="view">
+      <canvas id="game-canvas"></canvas>
+      <div id="play-overlay" class="play-overlay hidden"></div>
+      <button id="btn-eject" class="corner-btn">EJECT</button>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="view-gameover" class="view">
+      <h1 class="title mega" id="gameover-title">GAME OVER</h1>
+      <p id="gameover-winner"></p>
+      <button id="btn-rematch" class="big">PLAY AGAIN</button>
+      <button id="btn-quit" class="plain">QUIT</button>
+      <p id="rematch-status" class="small"></p>
+    </section>
+
+    <!-- RECONNECT OVERLAY -->
+    <div id="overlay-reconnect" class="overlay hidden">
+      <div class="overlay-box">
+        <p class="title">RECONNECTING...</p>
+        <p id="reconnect-countdown"></p>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

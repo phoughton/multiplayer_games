@@ -1,0 +1,184 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html, body {
+  height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: "Courier New", "Menlo", monospace;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  gap: 1.25rem;
+  text-align: center;
+}
+.view.active { display: flex; }
+
+.title {
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-shadow: 0 0 4px #fff;
+}
+.title.mega {
+  font-size: clamp(3rem, 18vw, 9rem);
+  letter-spacing: 0.35em;
+  animation: flicker 2.4s infinite;
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
+}
+
+button {
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+button.big {
+  border: 2px solid #fff;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  min-width: 260px;
+}
+button.big:hover, button.big:active { background: #fff; color: #000; }
+button.plain {
+  border: none;
+  font-size: 0.95rem;
+  opacity: 0.75;
+  padding: 0.5rem 1rem;
+}
+button.plain:hover { opacity: 1; }
+
+#join-panel { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; }
+#join-panel.hidden { display: none; }
+
+input#code-input {
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  font-family: inherit;
+  font-size: 2rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  width: min(90vw, 320px);
+  text-transform: uppercase;
+}
+input#code-input:focus { outline: none; background: #111; }
+
+.code-display {
+  font-size: clamp(2.5rem, 14vw, 6rem);
+  letter-spacing: 0.3em;
+  border: 2px solid #fff;
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 0 4px #fff;
+}
+
+#view-play { padding: 0; }
+canvas#game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  touch-action: none;
+}
+
+.corner-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  border: 1px solid #fff;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  background: rgba(0,0,0,0.6);
+  z-index: 5;
+}
+
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: clamp(4rem, 24vw, 14rem);
+  font-weight: 700;
+  text-shadow: 0 0 8px #fff;
+}
+.play-overlay.hidden { display: none; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.overlay.hidden { display: none; }
+.overlay-box { text-align: center; padding: 2rem; border: 2px solid #fff; }
+.overlay-box .title { font-size: 1.25rem; }
+
+.toast {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #000;
+  padding: 0.6rem 1rem;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
+  z-index: 20;
+  text-transform: uppercase;
+}
+.toast.hidden { display: none; }
+
+.error { color: #fff; border-left: 3px solid #fff; padding-left: 0.5rem; font-size: 0.9rem; }
+.error.hidden { display: none; }
+.small { font-size: 0.85rem; opacity: 0.7; }
+.hidden { display: none !important; }
+
+/* Subtle scanlines for retro flavour. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03) 0,
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 100;
+}
