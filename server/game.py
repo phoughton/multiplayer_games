@@ -18,8 +18,8 @@ BALL_SIZE = 0.045
 PADDLE_WIDTH = 0.18
 PADDLE_HALF = PADDLE_WIDTH / 2
 PADDLE_THICKNESS = 0.025
-P1_PADDLE_Y = 1.0 - 0.06
-P2_PADDLE_Y = 0.06
+P1_PADDLE_Y = 0.75
+P2_PADDLE_Y = 0.25
 INITIAL_SPEED = 0.275
 SPEED_BUMP = 1.05
 MAX_SPEED = 0.65
@@ -114,11 +114,11 @@ class PongGame:
             b.vy = abs(b.vy)
             self.state.last_sfx = "paddle"
 
-        if b.y > 1.0:
+        if b.y > P1_PADDLE_Y:
             self.state.score_p2 += 1
             self.state.last_sfx = "goal"
             self._after_goal(scorer=2)
-        elif b.y < 0.0:
+        elif b.y < P2_PADDLE_Y:
             self.state.score_p1 += 1
             self.state.last_sfx = "goal"
             self._after_goal(scorer=1)

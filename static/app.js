@@ -10,8 +10,12 @@
   const BALL_SIZE = 0.045;
   const PADDLE_WIDTH = 0.18;
   const PADDLE_THICKNESS = 0.025;
-  const P1_PADDLE_Y = 1.0 - 0.06;
-  const P2_PADDLE_Y = 0.06;
+  const P1_PADDLE_Y = 0.75;
+  const P2_PADDLE_Y = 0.25;
+  // Your paddle sits at CONTROL_ZONE_TOP in your own view; the strip below
+  // (bottom 25%) is the reserved "swipe here" zone. Opponent's mirror lives
+  // in the top 25% automatically because of the slot-2 180-degree flip.
+  const CONTROL_ZONE_TOP = 0.75;
 
   // --------------------------------------------------------------- DOM refs
   const views = {
@@ -280,6 +284,9 @@
     ctx.stroke();
     ctx.setLineDash([]);
 
+    // Control-zone divider + swipe hint (bottom 25% of *your* screen).
+    drawControlZone(W, H);
+
     // Paddles
     drawPaddle(App.state.p1_x, P1_PADDLE_Y, W, H);
     drawPaddle(App.state.p2_x, P2_PADDLE_Y, W, H);
@@ -312,6 +319,37 @@
     const pt = PADDLE_THICKNESS * H;
     ctx.fillStyle = "#fff";
     ctx.fillRect(vx * W - pw / 2, vy * H - pt / 2, pw, pt);
+  }
+
+  function drawControlZone(W, H) {
+    // Your control strip is the bottom 25% of the screen (below your paddle).
+    // With the slot-2 180-degree flip this ends up as the bottom of the
+    // viewport regardless of slot, so we draw in view-space directly.
+    const zoneTop = CONTROL_ZONE_TOP * H;
+
+    // Dashed boundary line between play area and control zone.
+    ctx.save();
+    ctx.strokeStyle = "rgba(255,255,255,0.45)";
+    ctx.setLineDash([6, 8]);
+    ctx.beginPath();
+    ctx.moveTo(0, zoneTop);
+    ctx.lineTo(W, zoneTop);
+    ctx.stroke();
+    ctx.restore();
+
+    // Swipe hint text, centered in the zone.
+    const mid = (zoneTop + H) / 2;
+    const primarySize = Math.round(Math.min(W, H) * 0.055);
+    const secondarySize = Math.round(Math.min(W, H) * 0.03);
+    ctx.save();
+    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = `bold ${primarySize}px "Courier New", monospace`;
+    ctx.fillText("← SWIPE HERE →", W / 2, mid - secondarySize * 0.6);
+    ctx.font = `${secondarySize}px "Courier New", monospace`;
+    ctx.fillText("MOVE PADDLE", W / 2, mid + primarySize * 0.6);
+    ctx.restore();
   }
 
   function drawScores(W, H) {
