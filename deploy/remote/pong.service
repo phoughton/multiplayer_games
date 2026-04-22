@@ -1,0 +1,54 @@
+[Unit]
+Description=Pong multiplayer server (FastAPI + uvicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pong
+Group=pong
+EnvironmentFile=/etc/pong.env
+WorkingDirectory=/opt/pong/app
+ExecStart=/opt/pong/venv/bin/uvicorn server.main:app \
+    --host ${HOST} --port ${PORT} \
+    --ws-max-size 4096 \
+    --proxy-headers \
+    --forwarded-allow-ips ${FORWARDED_ALLOW_IPS}
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=15
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+ProtectProc=invisible
+ProcSubset=pid
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+UMask=0077
+CapabilityBoundingSet=
+AmbientCapabilities=
+ReadWritePaths=/var/log/pong
+
+# Resource limits
+LimitNOFILE=65536
+TasksMax=512
+
+[Install]
+WantedBy=multi-user.target
